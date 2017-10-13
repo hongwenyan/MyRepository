@@ -1,0 +1,551 @@
+--***************************************************************************************
+--* FILE NAME   :  Raiu.MIB                                                         *
+--* CREATE DATE :  2011/04/01                                                           *
+--* AUTHOR      :  Gao Ming                                                         *
+--* Decription:    SNMP MIB for Raiu.                            *
+--***************************************************************************************
+-- CHANGE RECORD                                                                             
+------------|-------------|--------------------------------------------------------------
+-- VER/DATE |  AUTHOR     |  DESCRIPTION
+------------|-------------|--------------------------------------------------------------
+-- 1.0.0/   | Gao Ming	  | Initial version.
+--2011.04.11|             |
+------------|-------------|--------------------------------------------------------------
+
+--***************************************************************************************
+
+
+PizzaBox-Raiu-MIB DEFINITIONS  ::= BEGIN
+
+   IMPORTS
+        MODULE-IDENTITY,
+        OBJECT-TYPE,
+        NOTIFICATION-TYPE,
+        Counter32,
+        Integer32,
+        Gauge32,
+        TimeTicks,
+        Unsigned32
+             FROM SNMPv2-SMI
+
+        DateAndTime,
+        RowStatus,
+        TruthValue
+             FROM SNMPv2-TC
+
+        MODULE-COMPLIANCE,
+        OBJECT-GROUP,
+        NOTIFICATION-GROUP
+             FROM SNMPv2-CONF
+       
+        pbv1                
+              FROM PizzaBox-SMI ; 
+
+
+
+raiu	  MODULE-IDENTITY
+       LAST-UPDATED    "1003050000Z"
+       ORGANIZATION    "Alcatel-sbell Company Limited."
+       CONTACT-INFO
+             "Phone number: +86-21-58541240;
+              http://www.alcatel-sbell.com.cn"
+       DESCRIPTION
+             ""
+       ::= { pbv1 13 }
+
+--***************************************************************************************
+--
+-- raiuMIB
+--
+   
+   raiuMIB          OBJECT IDENTIFIER ::= { raiu 1 }
+      
+   raiuTermination   OBJECT IDENTIFIER ::= { raiuMIB 1 } 
+   
+        
+   raiuTermTable OBJECT-TYPE
+       SYNTAX       SEQUENCE OF RaiuTermEntry
+       MAX-ACCESS   not-accessible
+       STATUS       current
+       DESCRIPTION
+           "The raiu configuration table."
+       ::= { raiuTermination 1 }        
+   
+   raiuTermEntry OBJECT-TYPE
+        SYNTAX       RaiuTermEntry
+        MAX-ACCESS   not-accessible
+        STATUS       current
+        DESCRIPTION
+            ""
+        INDEX { raiuId }
+        ::= { raiuTermTable 1 }
+      
+    RaiuTermEntry ::= SEQUENCE {
+        			  raiuId
+            			Integer32,
+		       			raiuSizeno
+            			Integer32,
+            		raiuShelfsize
+            			Integer32,	
+            		raiuPresent
+            			Integer32				            
+								}   
+
+         
+    	raiuId OBJECT-TYPE
+    	SYNTAX       Integer32
+    	MAX-ACCESS   read-write
+    	STATUS       current
+    	DESCRIPTION
+            ""
+        ::= { raiuTermEntry 1 }
+        
+        
+        raiuSizeno OBJECT-TYPE
+        SYNTAX       Integer32
+        MAX-ACCESS   read-write
+        STATUS       current
+        DESCRIPTION
+            ""
+        ::= { raiuTermEntry 2 }
+                
+        
+        raiuShelfsize OBJECT-TYPE
+        SYNTAX       Integer32{
+        			UNKONW(0),
+        			SM_500MM(1),
+        			SM_600MM(2)
+        		      }
+        MAX-ACCESS   read-write
+        STATUS       current
+        DESCRIPTION
+            ""
+        ::= { raiuTermEntry 3 }
+        
+        raiuPresent OBJECT-TYPE
+        SYNTAX       Integer32{
+             			NO(0),
+   	        			YES(1)
+        		      }
+        MAX-ACCESS   read-write
+        STATUS       current
+        DESCRIPTION
+            ""
+        ::= { raiuTermEntry 4 }
+        
+--***************************************************************************************
+--
+-- raiuComdacMIB
+--
+
+   raiuComdacMIB	OBJECT IDENTIFIER ::= { raiu 2}
+
+   raiuComdac   OBJECT IDENTIFIER ::= { raiuComdacMIB 1 } 
+   
+   raiuComdacTable OBJECT-TYPE
+       SYNTAX       SEQUENCE OF RaiuComdacEntry
+       MAX-ACCESS   not-accessible
+       STATUS       current
+       DESCRIPTION
+           ""
+       ::= { raiuComdac 1 }     
+       
+   raiuComdacEntry OBJECT-TYPE
+        SYNTAX       RaiuComdacEntry
+        MAX-ACCESS   not-accessible
+        STATUS       current
+        DESCRIPTION
+            ""
+        INDEX { comdacRaiuId }
+        ::= { raiuComdacTable 1 }
+      
+   RaiuComdacEntry ::= SEQUENCE {
+    
+     						comdacRaiuId
+            			INTEGER,
+            		comdacPresent
+            			INTEGER,
+            		comdacPak
+            		  INTEGER,	
+            		comdac0Present
+            			INTEGER,
+            		comdac1Present
+            			INTEGER,
+            		comdac0Status
+            			INTEGER,
+            		comdac1Status
+            			INTEGER,
+            		comdac0Major
+            			INTEGER,
+            		comdac1Major
+            		  INTEGER,  				
+            		comdac0Type
+            			INTEGER,			
+								comdac1Type
+            			INTEGER
+					    }   
+         
+   	  	comdacRaiuId OBJECT-TYPE
+      	SYNTAX       Integer32
+      	MAX-ACCESS   read-write
+      	STATUS       current
+      	DESCRIPTION
+            ""
+        ::= { raiuComdacEntry 1 }
+                
+        comdacPresent OBJECT-TYPE
+        SYNTAX	      INTEGER{
+                               no(0),
+                               yes(1)
+        		                 }
+        MAX-ACCESS    read-write
+        STATUS        current
+        DESCRIPTION
+            ""
+        ::= { raiuComdacEntry 2}
+            
+        comdacPak OBJECT-TYPE
+        SYNTAX	      INTEGER{
+                               unkown(0),
+                               DG_DAC100(1),
+                               DG_DAC624(2),
+                               DG_DAC630(3),
+                               DG_DAC120(4)
+        		                 }
+        MAX-ACCESS    read-write
+        STATUS        current
+        DESCRIPTION
+            ""
+        ::= { raiuComdacEntry 3}
+        
+                          
+        comdac0Present OBJECT-TYPE
+        SYNTAX	      INTEGER{
+                               no(0),
+                               yes(1)
+        		                 }
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION
+            ""
+        ::= { raiuComdacEntry 4}        
+        
+        comdac1Present OBJECT-TYPE
+        SYNTAX	      INTEGER{
+                               no(0),
+                               yes(1)
+        		                 }
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION
+            ""
+        ::= { raiuComdacEntry 5}         
+                        
+        comdac0Status OBJECT-TYPE
+        SYNTAX       INTEGER{
+        										unknown(0),
+        										oos(1),
+        										actmajor(2),
+        										actminor(3)
+        		    	}
+        MAX-ACCESS   read-only
+        STATUS       current
+        DESCRIPTION
+            ""
+        ::= { raiuComdacEntry 6 }
+        
+        comdac1Status OBJECT-TYPE
+        SYNTAX       INTEGER{
+        										unknown(0),
+        										oos(1),
+        										actmajor(2),
+        										actminor(3)
+        		    }
+        MAX-ACCESS   read-only
+        STATUS       current
+        DESCRIPTION
+            ""
+        ::= { raiuComdacEntry 7 }  
+
+        comdac0Major OBJECT-TYPE
+        SYNTAX	      INTEGER{
+        			                no(0),
+        											yes(1)
+        		   						  }
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION
+            ""
+        ::= { raiuComdacEntry 8}       
+
+        comdac1Major OBJECT-TYPE
+        SYNTAX	      INTEGER{
+        											no(0),
+        											yes(1)
+        		     }
+        MAX-ACCESS    read-only
+        STATUS        current
+        DESCRIPTION
+            ""
+        ::= { raiuComdacEntry 9}   
+        
+        comdac0Type OBJECT-TYPE
+        SYNTAX       INTEGER{
+                               unkown(0),
+                               DG_DAC100(1),
+                               DG_DAC624(2),
+                               DG_DAC630(3),
+                               DG_DAC120(4)   
+                             }
+        MAX-ACCESS   read-only
+        STATUS       current
+        DESCRIPTION
+            ""
+        ::= { raiuComdacEntry 10 }          
+
+        comdac1Type OBJECT-TYPE
+        SYNTAX       INTEGER{
+                               unkown(0),
+                               DG_DAC100(1),
+                               DG_DAC624(2),
+                               DG_DAC630(3),
+                               DG_DAC120(4) 
+        		    						}
+        MAX-ACCESS   read-only
+        STATUS       current
+        DESCRIPTION
+            ""
+       	 ::= { raiuComdacEntry 11 }  
+
+--***************************************************************************************
+--
+-- raiuTrunkMIB
+--
+--
+               
+   raiuTrunkMIB	OBJECT IDENTIFIER ::= { raiu 3}
+
+   raiuTrunk   OBJECT IDENTIFIER ::= { raiuTrunkMIB 1 } 
+          
+   raiuTrunkTable OBJECT-TYPE
+       SYNTAX       SEQUENCE OF RaiuTrunkEntry
+       MAX-ACCESS   not-accessible
+       STATUS       current
+       DESCRIPTION
+           ""
+       ::= { raiuTrunk 1 }     
+     
+   raiuTrunkEntry OBJECT-TYPE
+        SYNTAX       RaiuTrunkEntry
+        MAX-ACCESS   not-accessible
+        STATUS       current
+        DESCRIPTION
+            ""
+        INDEX { trunkIndexId }
+        ::= { raiuTrunkTable 1 }         
+        
+   RaiuTrunkEntry ::= SEQUENCE {
+    
+     						trunkIndexId
+            			INTEGER,
+         		 		trunkPresent
+           				INTEGER, 			
+            		raiuNo
+            			INTEGER,
+            		comdacNo
+            			INTEGER,		
+            		trunkNo
+            			INTEGER,
+            		trunkStatus
+            			INTEGER,
+            		e1No
+            			INTEGER
+             			            
+    }           
+
+		   	trunkIndexId OBJECT-TYPE
+		   	SYNTAX       INTEGER
+		   	MAX-ACCESS   read-write
+		   	STATUS       current
+		   	DESCRIPTION
+	           ""
+	       ::= { raiuTrunkEntry 1 }
+       
+	      trunkPresent OBJECT-TYPE
+		   	SYNTAX       INTEGER
+		   	MAX-ACCESS   read-write
+		   	STATUS       current
+		   	DESCRIPTION
+           ""
+      	 ::= { raiuTrunkEntry 2 }
+       
+       
+	      raiuNo OBJECT-TYPE
+	   		SYNTAX       INTEGER
+   			MAX-ACCESS   read-write
+   			STATUS       current
+   			DESCRIPTION
+           ""
+       		::= { raiuTrunkEntry 3 }
+       
+       comdacNo OBJECT-TYPE
+				SYNTAX       INTEGER
+   			MAX-ACCESS   read-write
+   			STATUS       current
+   			DESCRIPTION
+           ""
+       		::= { raiuTrunkEntry 4 }
+       
+       trunkNo	 OBJECT-TYPE
+   			SYNTAX       INTEGER
+   			MAX-ACCESS   read-write
+   			STATUS       current
+   			DESCRIPTION
+           ""
+       		::= { raiuTrunkEntry 5}  
+       
+       trunkStatus OBJECT-TYPE
+   			SYNTAX       INTEGER{
+   												unenq(0),
+	                        act(1),
+	                        oos(2)
+   								}
+   			MAX-ACCESS   read-write
+   			STATUS       current
+   			DESCRIPTION
+           ""
+       ::= { raiuTrunkEntry 6 }    
+       
+       e1No OBJECT-TYPE
+		   	SYNTAX       INTEGER
+		   	MAX-ACCESS   read-write
+		   	STATUS       current
+		   	DESCRIPTION
+           ""
+       ::= { raiuTrunkEntry 7 }    
+         
+   
+               
+--***************************************************************************************
+--
+-- raiuApTable
+--
+
+   raiuApMIB	OBJECT IDENTIFIER ::= { raiu 4 }
+
+   raiuAp   OBJECT IDENTIFIER ::= { raiuApMIB 1 } 
+          
+   raiuApTable OBJECT-TYPE
+       SYNTAX       SEQUENCE OF RaiuApEntry
+       MAX-ACCESS   not-accessible
+       STATUS       current
+       DESCRIPTION
+           ""
+       ::= { raiuAp 1 }     
+     
+   raiuApEntry OBJECT-TYPE
+        SYNTAX       RaiuApEntry
+        MAX-ACCESS   not-accessible
+        STATUS       current
+        DESCRIPTION
+            ""
+        INDEX { apIndexId }
+        ::= { raiuApTable 1 }       
+
+   RaiuApEntry ::= SEQUENCE {
+    
+     						apIndexId
+            			INTEGER,
+            		apRaiuNo
+            			INTEGER,
+            		apNo
+            			INTEGER,
+            		apStatus
+            			INTEGER,
+            		apPresent
+            			INTEGER,
+            		apStyle
+            			INTEGER,
+            		apType
+            			INTEGER         					
+										}         
+    
+	    apIndexId OBJECT-TYPE
+	    	SYNTAX       INTEGER
+	    	MAX-ACCESS   read-write
+	    	STATUS       current
+	    	DESCRIPTION
+	           ""
+					    ::= { raiuApEntry 1 }
+
+	    apRaiuNo OBJECT-TYPE
+	    	SYNTAX       INTEGER
+	    	MAX-ACCESS   read-write
+	    	STATUS       current
+	    	DESCRIPTION
+	           ""
+					    ::= { raiuApEntry 2 }    
+       
+	    apNo OBJECT-TYPE
+	    	SYNTAX       INTEGER
+	    	MAX-ACCESS   read-write
+	    	STATUS       current
+	    	DESCRIPTION
+	           ""
+					    ::= { raiuApEntry 3 }    
+    
+          
+   	 apStatus OBJECT-TYPE
+				SYNTAX       INTEGER{
+	                        unenq(0),
+	                        act(1),
+	                        oos(2),
+	                        oosf(3)
+			    					}
+				MAX-ACCESS   read-only
+				STATUS       current
+				DESCRIPTION
+              ""
+    					::= { raiuApEntry 4 }
+          
+    apPresent OBJECT-TYPE
+				SYNTAX       INTEGER{
+	 		       						no(0),
+	 		       						yes(1)
+			    					}
+			MAX-ACCESS   read-write
+			STATUS       current
+			DESCRIPTION
+              ""
+   						 ::= { raiuApEntry 5 }    
+       
+    apType OBJECT-TYPE
+				SYNTAX       INTEGER{
+											unkown(0),
+											lpz100(1),
+											lpz121(2),
+											lpz122(3),
+											rng100(4),
+											tap100(5) 		
+										}
+			MAX-ACCESS   read-write
+			STATUS       current
+			DESCRIPTION
+              ""
+    					::= { raiuApEntry 6 }  
+    
+    apStyle OBJECT-TYPE
+				SYNTAX       INTEGER{
+											unkown(0),
+											zlp(1),
+											tstp(2),
+											rng(3)
+										}
+											
+				MAX-ACCESS   read-write
+				STATUS       current
+				DESCRIPTION
+              ""
+   						 ::= { raiuApEntry 7 }    
+        
+END        

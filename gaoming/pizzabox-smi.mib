@@ -1,0 +1,28 @@
+PizzaBox-SMI  DEFINITIONS ::=  BEGIN
+
+IMPORTS
+	enterprises FROM SNMPv2-SMI;	
+
+sbell MODULE-IDENTITY
+       LAST-UPDATED    "200108020000Z"
+       ORGANIZATION    "Shanghai Bell Company Limited."
+       CONTACT-INFO
+             "Phone number: +86-21-58541240;
+              http://www.sbell.com.cn"
+       DESCRIPTION
+             ""
+       ::= { enterprises 7475 }
+
+product       OBJECT IDENTIFIER ::= { sbell 2 }
+access        OBJECT IDENTIFIER ::= { product 1 }
+route         OBJECT IDENTIFIER ::= { product 2 }
+protocol      OBJECT IDENTIFIER ::= { product 100 }
+
+pizzabox     OBJECT IDENTIFIER ::= { access 2 }
+
+pbv1         OBJECT IDENTIFIER ::= { pizzabox 1 }
+
+sip          OBJECT IDENTIFIER ::= { protocol 3 }
+
+END
+
